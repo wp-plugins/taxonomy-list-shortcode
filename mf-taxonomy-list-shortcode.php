@@ -23,9 +23,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-$mf_taxonmy_list_shortcode = new mf_taxonmy_list_shortcode( 2 );
+$mf_taxonmy_list_shortcode = new mf_taxonmy_list_shortcode();
 
-class mf_taxonmy_list_shortcode{
+class mf_taxonmy_list_shortcode {
 	
 	var $default_cols = 3;
 	var $shortcode_name = 'taxonomy-list';
