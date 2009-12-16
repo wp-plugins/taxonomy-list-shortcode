@@ -3,7 +3,7 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://mfields.org/wordpress/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.2
+Version: 0.4
 Author: Michael Fields
 Author URI: http://mfields.org/
 
@@ -50,8 +50,7 @@ class mf_taxonmy_list_shortcode {
 		
 		$defaults = array(
 			'tax' => $this->default_taxonomy,
-			'cols' => $this->default_cols,
-			'args' => ''
+			'cols' => $this->default_cols
 			);
 		
 		extract( shortcode_atts( $defaults, $atts ) );
@@ -61,23 +60,23 @@ class mf_taxonmy_list_shortcode {
 		if( !is_taxonomy( $tax ) )
 			return $o;
 		
-		$terms = get_terms( $tax, $args );
+		$terms = get_terms( $tax, array( 'pad_counts' => true ) );
 		
-		if( is_wp_error( $terms ) || !is_array( $terms ) )
-			return $o;
-		
-		$chunked = array_chunk( $terms, ceil( count( $terms ) / $cols ) );
-		
-		$o.= "\n\n\t" . $this->pattern;
-		foreach( $chunked as $k => $column ) {
-			$o.= "\n\t" . '<ul class="mf_taxonomy_column mf_cols_' . $cols . '">';
-			foreach( $column as $term ) {
-				$url = esc_url( get_term_link( $term, $tax ) );
-				$o.= "\n\t\t" . '<li><a href="' . $url . '">' . $term->name . '</a> <span class="quantity">' . $term->count . '</span></li>';
+		if( is_array( $terms ) && count( $terms ) > 0 ) {
+			$chunked = array_chunk( $terms, ceil( count( $terms ) / $cols ) );
+			
+			$o.= "\n\n\t" . $this->pattern;
+			
+			foreach( $chunked as $k => $column ) {
+				$o.= "\n\t" . '<ul class="mf_taxonomy_column mf_cols_' . $cols . '">';
+				foreach( $column as $term ) {
+					$url = esc_url( get_term_link( $term, $tax ) );
+					$o.= "\n\t\t" . '<li><a href="' . $url . '">' . $term->name . '</a> <span class="quantity">' . $term->count . '</span></li>';
+				}
+				$o.=  "\n\t" . '</ul>';
 			}
-			$o.=  "\n\t" . '</ul>';
+			$o.=  "\n\t" . '<div class="clear"></div>';
 		}
-		$o.=  "\n\t" . '<div class="clear"></div>';
 		
 		return $o;
 	}

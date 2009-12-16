@@ -57,6 +57,12 @@ The `[taxonomy-list]` shortcode currently supports two parameters, one that acce
 
 ==Changelog==
 
+= 0.4 =
+* pad_counts is now set to true by default for get_terms();
+
+= 0.3 =
+* PHP Bugfix with empty array being passed to array_chunk().
+
 = 0.2 =
 * Added the `sanitize_cols()` method.
 
