@@ -3,9 +3,9 @@ Taxonomy List Shortcode
 
 Contributors: mfields
 Donate link: http://mfields.org/donate/
-Tags: taxonomy, tag, category, index, list, custom
+Tags: taxonomy, tag, category, index, list
 Requires at least: 2.8.6
-Tested up to: 2.9
+Tested up to: 2.9.1
 Stable tag: trunk
 
 The Taxonomy List Shortcode plugin adds a shortcode to your WordPress installation which enables you to display multiple unordered lists containing every term of a given taxonomy.
@@ -22,24 +22,24 @@ The Taxonomy List Shortcode plugin adds a [shortcode](http://codex.wordpress.org
 
 ==Usage==
 
-Adding `[taxonomy-list]` to your post content will render a one column, unordered list of every tag associated to a post. This list is styled with custom css which is printed in the head section of the generated xhtml document. Please note: this css will only be printed on pages/posts where you have used the shortcode. If no shortcode is present in the post-content field, no css will be printed.
+Adding `[taxonomy-list]` to your post content will render a one column, unordered list of every tag associated to a post. This list is styled with custom css which is printed in the head section of the generated xhtml document. Please note: this css will only be printed on pages/posts where you have used the shortcode. <del>If no shortcode is present in the post-content field, no css will be printed.</del> Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it of by using the checkbox labeled "Enable CSS for Taxonomy List Shortcode Plugin" under the "Miscelaneous" section of settings
 
 ==Supported Parameters==
 
-The `[taxonomy-list]` shortcode currently supports two parameters, one that accepts the taxonomy name and another that defines the number of columns to be displayed.
+The `[taxonomy-list]` shortcode currently supports three parameters, one that accepts the taxonomy name, another that defines the number of columns to be displayed and finaly one that allows you to fine-tune the output by adding an argument string please see the $args parameter of [get_terms()](http://codex.wordpress.org/Function_Reference/get_terms) for details pertaining to the propper syntax.
 
-1. = Taxonomy Name = To define the taxonomy that you would like to list terms from, you will need to specifiy the name of the taxonomy in the `tax` parameter: `[taxonomy-list tax="category"]`. In an "out-of-the-box" installation of WordPress, the following taxonomies will be recognized: `post_tag`, `category`, and `link_category`. If you have defined custom taxonomies through use of a plugin or your own hacker-skillz, you can use the name of this taonomy as well: `[taxonomy-list tax="fishy-squiggles"]`. If the taxonomy cannot be located, due to a spelling error or missing code, the `[taxonomy-list]` shortcode will return an empty string.
-1. = Columns = To define the number of columns that the `[taxonomy-list]` shortcode generates, you will want to use the `cols` parameter. This parameter will accept an integer from 1 - 5. If this parameter is left empty, or a value outside of it's range is defined, it will default to three columns.
+1. =Taxonomy Name= To define the taxonomy that you would like to list terms from, you will need to specifiy the name of the taxonomy in the `tax` parameter: `[taxonomy-list tax="category"]`. In an "out-of-the-box" installation of WordPress, the following taxonomies will be recognized: `post_tag`, `category`, and `link_category`. If you have defined custom taxonomies through use of a plugin or your own hacker-skillz, you can use the name of this taonomy as well: `[taxonomy-list tax="fishy-squiggles"]`. If the taxonomy cannot be located, due to a spelling error or missing code, the `[taxonomy-list]` shortcode will return an empty string.
+1. =Columns= To define the number of columns that the `[taxonomy-list]` shortcode generates, you will want to use the `cols` parameter. This parameter will accept an integer from 1 - 5. If this parameter is left empty, or a value outside of it's range is defined, it will default to three columns. Example: `[taxonomy-list tax="category" cols="4"]`.
 
 ==Examples==
 
-1. = Post Tags (default) = `[taxonomy-list]` - Display a three column, list of Post Tags in alphetbetical order. Although this is the default usage, it is synonymous with `[taxonomy-list tax="post_tag" cols="3"]`.
-1. = Post Categories = `[taxonomy-list tax='category']` - Display a three column, unordered list of Post Categories.
-1. = Link Categories = `[taxonomy-list tax='link_category']` - Display a three column, unordered list of Link Categories.
-1. = Custom Taxonomy = `[taxonomy-list tax="fishy-squiggles"]` - Display a three column, unordered list of the [custom taxonomy](http://justintadlock.com/archives/2009/05/06/custom-taxonomies-in-wordpress-28) "fishy-squiggles".
-1. = Two Columns = `[taxonomy-list cols="2"]` - Display a two, horizontally-aligned unordered lists of Post Tags.
-1. = Five Columns (maximum) = `[taxonomy-list cols="5"]` - Display a 5, horizontally-aligned unordered lists of Post Tags.
-1. = Custom Taxonomy with 3 Columns = `[taxonomy-list tax="fishy-squiggles" cols="5"]` - Display a 5, horizontally-aligned unordered lists of the custom taxonomy "fishy-squiggles".
+1. =Post Tags (default)= `[taxonomy-list]` - Display a three column, list of Post Tags in alphetbetical order. Although this is the default usage, it is synonymous with `[taxonomy-list tax="post_tag" cols="3"]`.
+1. =Post Categories= `[taxonomy-list tax='category']` - Display a three column, unordered list of Post Categories.
+1. =Link Categories= `[taxonomy-list tax='link_category']` - Display a three column, unordered list of Link Categories. Special note: it is rather pointless to use link categories do to the fact that WordPress does not support front-end display of individual links.
+1. =Custom Taxonomy= `[taxonomy-list tax="fishy-squiggles"]` - Display a three column, unordered list of the [custom taxonomy](http://justintadlock.com/archives/2009/05/06/custom-taxonomies-in-wordpress-28) "fishy-squiggles".
+1. =Two Columns = `[taxonomy-list cols="2"]` - Display a two, horizontally-aligned unordered lists of Post Tags.
+1. =Five Columns (maximum) = `[taxonomy-list cols="5"]` - Display a 5, horizontally-aligned unordered lists of Post Tags.
+1. =Custom Taxonomy with 5 Columns = `[taxonomy-list tax="fishy-squiggles" cols="5"]` - Display 5, horizontally-aligned unordered lists of the custom taxonomy "fishy-squiggles".
 
 
 = The XHTML + CSS was Tested in the Following User Agents =
@@ -57,14 +57,23 @@ The `[taxonomy-list]` shortcode currently supports two parameters, one that acce
 
 ==Changelog==
 
-= 0.4 =
+=0.5=
+* Main plugin file's name has been changed from "mf-taxonomy-list-shortcode.php" to "taxonomy-list-shortcode.php".
+* Style tag has been optimized to only use one line when rendered.
+* No longer using an object.
+* Removed the include_css() function.
+* Added option for CSS. This can be Set under Miscellaneous -> "Enable CSS for Taxonomy List Shortcode Plugin".
+* Added PhpDoc style comments to code.
+* Added "args" attribute to the shortcode.
+
+=0.4=
 * pad_counts is now set to true by default for get_terms();
 
-= 0.3 =
+=0.3=
 * PHP Bugfix with empty array being passed to array_chunk().
 
-= 0.2 =
+=0.2=
 * Added the `sanitize_cols()` method.
 
-= 0.1 =
+=0.1=
 * Original Release - Works With: wp 2.8.6 + wp 2.9 beta 2.
