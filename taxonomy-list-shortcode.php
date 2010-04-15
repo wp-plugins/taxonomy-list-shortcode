@@ -3,21 +3,17 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://mfields.org/wordpress/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.5
+Version: 0.6
 Author: Michael Fields
 Author URI: http://mfields.org/
-
 Copyright 2009-2010  Michael Fields  michael@mfields.org
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2 as published by
 the Free Software Foundation.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -34,7 +30,6 @@ if( !function_exists( 'mf_taxonomy_list_activate' ) ) {
 		add_option( 'mf_taxonomy_list_enable_css', 1 );
 	}
 }
-
 if( !function_exists( 'mf_taxonomy_list_deactivate' ) ) {
 	/*
 	* Called when user deactivates this plugin.
@@ -46,7 +41,6 @@ if( !function_exists( 'mf_taxonomy_list_deactivate' ) ) {
 		delete_option( 'mf_taxonomy_list_enable_css' );
 	}
 }
-
 if( !function_exists( 'mf_taxonomy_list_admin_menu' ) ) {
 	/*
 	* Add a checkbox to the WordPress "Miscellaneous" Administration Panel
@@ -59,7 +53,6 @@ if( !function_exists( 'mf_taxonomy_list_admin_menu' ) ) {
 		add_settings_field( 'mf_taxonomy_list_enable_css', 'Enable CSS for Taxonomy List Shortcode Plugin', 'mf_taxonomy_list_enable_css_field', 'misc' );
 	}
 }
-
 if( !function_exists( 'mf_taxonomy_list_init' ) ) {
 	/*
 	* This function is executed during the "admin_init" action.
@@ -114,7 +107,9 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 		$defaults = array(
 			'tax' => 'post_tag',
 			'cols' => 3,
-			'args' => ''
+			'args' => '',
+			'background' => 'fff',
+			'color' => '000'
 			);
 		
 		extract( shortcode_atts( $defaults, $atts ) );
@@ -137,18 +132,25 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 		/* Split the array into smaller pieces + generate html to display lists. */
 		if( is_array( $terms ) && count( $terms ) > 0 ) {
 			$chunked = array_chunk( $terms, ceil( count( $terms ) / $cols ) );
+			$o.= "\n\t" . '<div class="mf_taxonomy_list">';
 			foreach( $chunked as $k => $column ) {
 				$o.= "\n\t" . '<ul class="mf_taxonomy_column mf_cols_' . $cols . '">';
 				foreach( $column as $term ) {
 					$url = esc_url( get_term_link( $term, $tax ) );
 					$count = intval( $term->count );
-					$o.= "\n\t\t" . '<li><a href="' . $url . '">' . $term->name . '</a> <span class="quantity">' . $count . '</span></li>';
+					$style = '';
+					$style.= ( $background != 'fff' ) ? ' background:#' . $background . ';' : '';
+					$style.= ( $color != '000' ) ? ' color:#' . $color . ';' : '';
+					$style = ( !empty( $style ) ) ? ' style="' . trim( $style ) . '"' : '';
+					
+					$o.= "\n\t\t" . '<li' . $style . '><a' . $style . ' href="' . $url . '">' . $term->name . '</a> <span' . $style . ' class="quantity">' . $count . '</span></li>';
 				}
 				$o.=  "\n\t" . '</ul>';
 			}
 			$o.=  "\n\t" . '<div class="clear"></div>';
+			$o.=  "\n\t" . '</div>';
 		}
-		$o = "\n\n\t" . '<!-- START mf-taxonomy-list-plugin -->' . $o . "\n\t" . '<!-- END mf-taxonomy-list-plugin -->' . "\n" ;
+		$o = "\n\t" . '<!-- START mf-taxonomy-list-plugin -->' . $o . "\n\t" . '<!-- END mf-taxonomy-list-plugin -->' . "\n" ;
 		return $o;
 	}
 }
@@ -171,12 +173,11 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 			padding-left: 0px;
 			text-indent: 0px;
 			}
-
 		ul.mf_taxonomy_column,
 		.entry ul.mf_taxonomy_column {
 			float: left;
 			margin: 0;
-			padding: 0 0 2em;
+			padding: 0 0 1em;
 			list-style-type: none;
 			list-style-position: outside;
 			}
@@ -200,7 +201,7 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 			margin: 0 1em .4em 0;
 			}
 		.mf_taxonomy_column a,
-		.quantity {
+		.mf_taxonomy_column .quantity {
 			position:absolute;
 			bottom: -0.2em;
 			line-height: 1em;
@@ -213,10 +214,13 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 			padding-right: 0.3em;
 			text-decoration: none;
 			}
-		.quantity {
+		.mf_taxonomy_column .quantity {
 			display: block;
 			right:0;
 			padding-left: 0.3em;
+			}
+		.mf_taxonomy_list .clear {
+			clear:both;
 			}
 		</style>
 EOF;
@@ -224,7 +228,6 @@ EOF;
 		}
 	}
 }
-
 if( !function_exists( 'mf_taxonomy_list_sanitize_cols' ) ) {
 	/**
 	* Returns an integer between 1 and 5.
@@ -242,7 +245,6 @@ if( !function_exists( 'mf_taxonomy_list_sanitize_cols' ) ) {
 		return $min;
 	}
 }
-
 if( !function_exists( 'pr' ) ) {
 	/*
 	* Recursively print stuff wrapped in a pre tag.
@@ -253,7 +255,6 @@ if( !function_exists( 'pr' ) ) {
 		print '<pre>' . print_r( $var, true ) . '</pre>';
 	}
 }
-
 /* Hook into WordPress */
 add_shortcode( 'taxonomy-list', 'mf_taxonomy_list_shortcode' );
 add_action( 'wp_head', 'mf_taxonomy_list_css' );
