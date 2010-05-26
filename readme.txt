@@ -12,11 +12,6 @@ The Taxonomy List Shortcode plugin adds a shortcode to your WordPress installati
 ==Description==
 The Taxonomy List Shortcode plugin adds a [shortcode](http://codex.wordpress.org/Shortcode_API) to your [WordPress](http://wordpress.org/) installation which enables you to display multiple unordered lists containing every term of a given [taxonomy](http://codex.wordpress.org/WordPress_Taxonomy ).
 
-==Installation==
-1. [Download](http://wordpress.org/extend/plugins/taxonomy-list-shortcode/)
-1. Unzip the package and upload to your /wp-content/plugins/ directory.
-1. Log into WordPress and navigate to the "Plugins" panel.
-1. Activate the plugin.
 
 __Usage__
 Adding `[taxonomy-list]` to your post content will render a set of three unordered lists containing all terms of a given taxonomy. Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it off by using the checkbox labeled "Enable CSS for Taxonomy List Shortcode Plugin" under the "Miscelaneous" section of "Settings".
@@ -91,3 +86,9 @@ You are now able to disable term counts using the "show_counts" argument.
 
 = 0.1 =
 * Original Release - Works With: wp 2.8.6 + wp 2.9 beta 2.
+
+==Installation==
+1. [Download](http://wordpress.org/extend/plugins/taxonomy-list-shortcode/)
+1. Unzip the package and upload to your /wp-content/plugins/ directory.
+1. Log into WordPress and navigate to the "Plugins" panel.
+1. Activate the plugin.
