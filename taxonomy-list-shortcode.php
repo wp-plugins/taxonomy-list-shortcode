@@ -3,7 +3,7 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://mfields.org/wordpress/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.6
+Version: 0.7
 Author: Michael Fields
 Author URI: http://mfields.org/
 Copyright 2009-2010  Michael Fields  michael@mfields.org
@@ -109,7 +109,8 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 			'cols' => 3,
 			'args' => '',
 			'background' => 'fff',
-			'color' => '000'
+			'color' => '000',
+			'show_counts' => 1
 			);
 		
 		extract( shortcode_atts( $defaults, $atts ) );
@@ -143,7 +144,10 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 					$style.= ( $color != '000' ) ? ' color:#' . $color . ';' : '';
 					$style = ( !empty( $style ) ) ? ' style="' . trim( $style ) . '"' : '';
 					
-					$o.= "\n\t\t" . '<li' . $style . '><a' . $style . ' href="' . $url . '">' . $term->name . '</a> <span' . $style . ' class="quantity">' . $count . '</span></li>';
+					$li_class = ( $show_counts ) ? ' class="has-quantity"' : '';
+					$quantity = ( $show_counts ) ? ' <span' . $style . ' class="quantity">' . $count . '</span>' : '';
+					
+					$o.= "\n\t\t" . '<li' . $li_class . $style . '><a' . $style . ' href="' . $url . '">' . $term->name . '</a>' . $quantity . '</li>';
 				}
 				$o.=  "\n\t" . '</ul>';
 			}
@@ -194,11 +198,14 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 		.entry ul.mf_taxonomy_column li {
 			list-style: none, outside;
 			position: relative;
-			border-bottom: 1px dotted #888;
 			height: 1.5em;
 			z-index: 0;
 			background: #fff;
 			margin: 0 1em .4em 0;
+			}
+		.mf_taxonomy_column li.has-quantity,
+		.entry ul.mf_taxonomy_column li.has-quantity {
+			border-bottom: 1px dotted #888;
 			}
 		.mf_taxonomy_column a,
 		.mf_taxonomy_column .quantity {

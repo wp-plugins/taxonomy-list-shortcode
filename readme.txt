@@ -19,14 +19,19 @@ The Taxonomy List Shortcode plugin adds a [shortcode](http://codex.wordpress.org
 1. Activate the plugin.
 
 __Usage__
-Adding `[taxonomy-list]` to your post content will render a one column, unordered list of every tag associated to a post. This list is styled with custom css which is printed in the head section of the generated xhtml document. Please note: this css will only be printed on pages/posts where you have used the shortcode. <del>If no shortcode is present in the post-content field, no css will be printed.</del> Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it of by using the checkbox labeled "Enable CSS for Taxonomy List Shortcode Plugin" under the "Miscelaneous" section of settings
+Adding `[taxonomy-list]` to your post content will render a set of three unordered lists containing all terms of a given taxonomy. Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it off by using the checkbox labeled "Enable CSS for Taxonomy List Shortcode Plugin" under the "Miscelaneous" section of "Settings".
 
 __Supported Parameters__
-The `[taxonomy-list]` shortcode currently supports three parameters, one that accepts the taxonomy name, another that defines the number of columns to be displayed and finaly one that allows you to fine-tune the output by adding an argument string please see the $args parameter of [get_terms()](http://codex.wordpress.org/Function_Reference/get_terms) for details pertaining to the propper syntax.
+
 1. __tax__ To define the taxonomy that you would like to list terms from, you will need to specifiy the name of the taxonomy in the `tax` parameter: `[taxonomy-list tax="category"]`. In an "out-of-the-box" installation of WordPress, the following taxonomies will be recognized: `post_tag`, `category`, and `link_category`. If you have defined custom taxonomies through use of a plugin or your own hacker-skillz, you can use the name of this taonomy as well: `[taxonomy-list tax="fishy-squiggles"]`. If the taxonomy cannot be located, due to a spelling error or missing code, the `[taxonomy-list]` shortcode will return an empty string.
+
 1. __cols__ To define the number of columns that the `[taxonomy-list]` shortcode generates, you will want to use the `cols` parameter. This parameter will accept an integer from 1 - 5. If this parameter is left empty, or a value outside of it's range is defined, it will default to three columns. Example: `[taxonomy-list tax="category" cols="4"]`.
+
 1. __color__ Use this to define the color of the text. The color passed should be in hexidecimal notation (ff0000) or short hand (f00) Please do not include the hash character (#).
-1. __color__ Use this to define the color of the background. The color passed should be in hexidecimal notation (ff0000) or short hand (f00) Please do not include the hash character (#).
+
+1. __background__ Use this to define the color of the background. The color passed should be in hexidecimal notation (ff0000) or short hand (f00) Please do not include the hash character (#).
+
+1. __show_counts__ (bool) If you would like to disable the counts from displaying after your term name, set this parameter to `0`. Default value is `1`.
 
 __Examples__
 1. __Post Tags (default)__ `[taxonomy-list]` - Display a three column, list of Post Tags in alphetbetical order. Although this is the default usage, it is synonymous with `[taxonomy-list tax="post_tag" cols="3"]`.
@@ -50,7 +55,17 @@ __This Plugin has been tested with the Following WordPress Themes__
 * [Hybrid](http://themehybrid.com/)
 * Thematic
 
+== Upgrade Notice ==
+
+= 0.7 =
+You are now able to disable term counts using the "show_counts" argument.
+
+
+
 ==Changelog==
+= 0.7 =
+* Allowed for disabling of term counts via the show_counts argument. Props to nicolas for the suggestion.
+
 = 0.6 =
 * Added parameters for background and color.
 * CSS bug fixes.
