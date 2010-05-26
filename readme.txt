@@ -29,21 +29,30 @@ __Supported Parameters__
 1. __show_counts__ (bool) If you would like to disable the counts from displaying after your term name, set this parameter to `0`. Default value is `1`.
 
 __Examples__
+
 1. __Post Tags (default)__ `[taxonomy-list]` - Display a three column, list of Post Tags in alphetbetical order. Although this is the default usage, it is synonymous with `[taxonomy-list tax="post_tag" cols="3"]`.
+
 1. __Post Categories__ `[taxonomy-list tax='category']` - Display a three column, unordered list of Post Categories.
+
 1. __Link Categories__ `[taxonomy-list tax='link_category']` - Display a three column, unordered list of Link Categories. Special note: it is rather pointless to use link categories do to the fact that WordPress does not support front-end display of individual links.
+
 1. __Custom Taxonomy__ `[taxonomy-list tax="fishy-squiggles"]` - Display a three column, unordered list of the [custom taxonomy](http://justintadlock.com/archives/2009/05/06/custom-taxonomies-in-wordpress-28) "fishy-squiggles".
+
 1. __Two Columns__ `[taxonomy-list cols="2"]` - Display a two, horizontally-aligned unordered lists of Post Tags.
+
 1. __Five Columns (maximum)__ `[taxonomy-list cols="5"]` - Display a 5, horizontally-aligned unordered lists of Post Tags.
+
 1. __Custom Taxonomy with 5 Columns__ `[taxonomy-list tax="fishy-squiggles" cols="5"]` - Display 5, horizontally-aligned unordered lists of the custom taxonomy "fishy-squiggles".
 
 __The XHTML + CSS was Tested in the Following User Agents__
+
 * Windows XP: Internet Explorer 6
 * Windows XP: FireFox 3.5.3
 * Windows XP: Opera 9.26
 * Windows XP: Safari 4.0.3
 
 __This Plugin has been tested with the Following WordPress Themes__
+
 * Twenty Ten
 * WordPress Classic
 * [Kubrick](http://binarybonsai.com/wordpress/kubrick/)
