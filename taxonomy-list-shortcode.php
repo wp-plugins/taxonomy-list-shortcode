@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Taxonomy List Shortcode
-Plugin URI: http://mfields.org/wordpress/plugins/taxonomy-list-shortcode/
+Plugin URI: http://wordpress.mfields.org/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
 Version: 0.7
 Author: Michael Fields
-Author URI: http://mfields.org/
+Author URI: http://wordpress.mfields.org/
 Copyright 2009-2010  Michael Fields  michael@mfields.org
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2 as published by
