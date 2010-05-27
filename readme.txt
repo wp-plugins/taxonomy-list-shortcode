@@ -14,7 +14,7 @@ The Taxonomy List Shortcode plugin adds a [shortcode](http://codex.wordpress.org
 
 
 __Usage__
-Adding `[taxonomy-list]` to your post content will render a set of three unordered lists containing all terms of a given taxonomy. Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it off by using the checkbox labeled "Enable CSS for Taxonomy List Shortcode Plugin" under the "Miscelaneous" section of "Settings".
+Adding `[taxonomy-list]` to your post content will render a set of three unordered lists containing all terms of a given taxonomy. Custom css will be printed in a style tag to the head of every page view. If this is unacceptable to you, you may turn it off by using the checkbox labeled "Enable CSS" under the "Taxonomy" section of "Settings" in the Administration Panels.
 
 __Supported Parameters__
 
@@ -27,6 +27,8 @@ __Supported Parameters__
 1. __background__ Use this to define the color of the background. The color passed should be in hexidecimal notation (ff0000) or short hand (f00) Please do not include the hash character (#).
 
 1. __show_counts__ (bool) If you would like to disable the counts from displaying after your term name, set this parameter to `0`. Default value is `1`.
+
+1. __NEW! per_page__ (int) Using this parameter enables paging for your term list. It accepts a numerical value from 1 to "your hearts desire". It is suggested that this feature only be activated on pages that display a list of terms from a single taxonomy. No need to worry, if you have 2 or more lists of terms on a page and you add the per_page parameter to both shortcodes, your site will not break. Please refrain from using this parameter on shortcodes within posts.
 
 __Examples__
 
@@ -48,6 +50,7 @@ __The XHTML + CSS was Tested in the Following User Agents__
 
 * Windows XP: Internet Explorer 6
 * Windows XP: FireFox 3.5.3
+* Windows XP: FireFox 3.6.3
 * Windows XP: Opera 9.26
 * Windows XP: Safari 4.0.3
 
@@ -57,16 +60,24 @@ __This Plugin has been tested with the Following WordPress Themes__
 * WordPress Classic
 * [Kubrick](http://binarybonsai.com/wordpress/kubrick/)
 * [Hybrid](http://themehybrid.com/)
-* Thematic
+* [Thematic](http://themeshaper.com/)
 
 == Upgrade Notice ==
+
+= 0.8 =
+Paging has been added for the term lists. Full support for WordPress version 3.0 has been added.
 
 = 0.7 =
 You are now able to disable term counts using the "show_counts" argument.
 
 
-
 ==Changelog==
+
+= 0.8 =
+* Added Support for paging via the __per_page__ parameter.
+* Added cutom subpage under "Settings" called "Taxonomy" for 3.0 support. They killed "Miscelaneous" where our setting used to live.
+* Changed the name of the CSS setting in the database. Sorry, it won't happen again :)
+
 = 0.7 =
 * Allowed for disabling of term counts via the show_counts argument. Props to nicolas for the suggestion.
 
