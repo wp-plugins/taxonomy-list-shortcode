@@ -3,7 +3,7 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://wordpress.mfields.org/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.8
+Version: 0.8.1
 Author: Michael Fields
 Author URI: http://mfields.org/
 Copyright 2009-2010  Michael Fields  michael@mfields.org
@@ -22,31 +22,31 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 include_once( 'taxonomy-administration-panel.php' );
 
-add_action( 'mfields_taxonomy_administration_panel', 'test' );
-function test() {
-	$alert = '';
-	
-	/* Process the Form */
-	if( isset( $_POST ) ) {
-		$css = ( isset( $_POST['mfields_taxonomy_list_shortcode_enable_css'] ) ) ? 1 : 0;
-		$css_human = ( $css ) ? 'true' : 'false';
-		$updated = update_option( 'mfields_taxonomy_list_shortcode_enable_css', $css );
-	}
-	
-	$checked = checked( '1', get_option( 'mfields_taxonomy_list_shortcode_enable_css' ), false );
-	
-	print <<<EOF
-		<div class="mfields-taxonomy-plugin">
-		<h3>Taxonomy List Shortcode</h3>
-		{$alert}
-		<form action="" method="post">
-			<p><label for="mfields_taxonomy_list_shortcode_enable_css"><input name="mfields_taxonomy_list_shortcode_enable_css" type="checkbox" id="mfields_taxonomy_list_shortcode_enable_css" value="1"{$checked} /> Enable CSS</label></p>
-			<input class="button" type="submit" name="mfields_taxonomy_list_shortcode_submit" value="Update Settings">
-		</form>
-		</div>
+if( !function_exists( 'mfields_taxonomy_list_shortcode_admin_section' ) ) {
+	add_action( 'mfields_taxonomy_administration_panel', 'mfields_taxonomy_list_shortcode_admin_section' );
+	function mfields_taxonomy_list_shortcode_admin_section() {
+		$alert = '';
+		
+		/* Process the Form */
+		if( isset( $_POST['mfields_taxonomy_list_shortcode_submit'] ) ) {
+			$css = ( isset( $_POST['mfields_taxonomy_list_shortcode_enable_css'] ) ) ? 1 : 0;
+			$css_human = ( $css ) ? 'true' : 'false';
+			$updated = update_option( 'mfields_taxonomy_list_shortcode_enable_css', $css );
+		}
+		
+		$checked = checked( '1', get_option( 'mfields_taxonomy_list_shortcode_enable_css' ), false );
+		
+		print <<<EOF
+			<div class="mfields-taxonomy-plugin">
+			<h3>Taxonomy List Shortcode</h3>
+			<form action="" method="post">
+				<p><label for="mfields_taxonomy_list_shortcode_enable_css"><input name="mfields_taxonomy_list_shortcode_enable_css" type="checkbox" id="mfields_taxonomy_list_shortcode_enable_css" value="1"{$checked} /> Enable CSS</label></p>
+				<input class="button" type="submit" name="mfields_taxonomy_list_shortcode_submit" value="Update Settings">
+			</form>
+			</div>
 EOF;
+	}
 }
-
 
 if( !function_exists( 'mf_taxonomy_list_activate' ) ) {
 	/*
@@ -193,7 +193,14 @@ EOF;
 					$li_class = ( $show_counts ) ? ' class="has-quantity"' : '';
 					$quantity = ( $show_counts ) ? ' <span' . $style . ' class="quantity">' . $count . '</span>' : '';
 					
-					$o.= "\n\t\t" . '<li' . $li_class . $style . '><a' . $style . ' href="' . $url . '">' . $term->name . '</a>' . $quantity . '</li>';
+					/* Edit Link for term */
+					$taxonomy = get_taxonomy( $tax );
+					if ( current_user_can( $taxonomy->cap->manage_terms ) ) {
+						$title = 'Edit ' . esc_attr( $term->name );
+						$href = admin_url() . 'edit-tags.php?action=edit&taxonomy=' . esc_attr( $taxonomy->name ) . '&tag_ID=' . $term->term_id;
+						$edit = '<a href="' . $href . '" title="' . $title . '">[edit]</a> ';
+					}
+					$o.= "\n\t\t" . '<li' . $li_class . $style . '>' . $edit . '<a' . $style . ' href="' . $url . '">' . $term->name . '</a>' . $quantity . '</li>';
 				}
 				$o.=  "\n\t" . '</ul>';
 			}

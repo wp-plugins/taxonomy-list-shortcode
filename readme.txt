@@ -73,6 +73,9 @@ You are now able to disable term counts using the "show_counts" argument.
 
 ==Changelog==
 
+= 0.8.1 =
+* Fixed bug in form control for css toggle.
+
 = 0.8 =
 * Added Support for paging via the __per_page__ parameter.
 * Added cutom subpage under "Settings" called "Taxonomy" for 3.0 support. They killed "Miscelaneous" where our setting used to live.
