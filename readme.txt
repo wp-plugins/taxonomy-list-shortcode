@@ -70,6 +70,9 @@ __This Plugin has been tested with the Following WordPress Themes__
 == Upgrade Notice ==
 
 = 0.9 =
+Temporary fix for taxonomy permissions. Need to take a closer look at this later.
+
+= 0.9 =
 Added edit links to each term displayed in a list. Please see Changelog for all changes.
 
 = 0.8 =

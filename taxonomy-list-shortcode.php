@@ -3,7 +3,7 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://wordpress.mfields.org/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.9
+Version: 0.9.1
 Author: Michael Fields
 Author URI: http://wordpress.mfields.org/
 Copyright 2009-2010  Michael Fields  michael@mfields.org
@@ -209,7 +209,8 @@ EOF;
 					
 					/* Edit Link for term */
 					$taxonomy = get_taxonomy( $tax );
-					if ( current_user_can( $taxonomy->cap->manage_terms ) ) {
+					
+					if ( current_user_can( 'manage_categories' ) ) {
 						$title = 'Edit ' . esc_attr( $term->name );
 						$href = admin_url() . 'edit-tags.php?action=edit&taxonomy=' . esc_attr( $taxonomy->name ) . '&tag_ID=' . $term->term_id;
 						$edit = '<a class="edit-term" href="' . $href . '" title="' . $title . '"><img src="' . $edit_img . '" alt="edit" /></a> ';
