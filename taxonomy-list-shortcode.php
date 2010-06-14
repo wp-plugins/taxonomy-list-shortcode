@@ -3,9 +3,9 @@
 Plugin Name: Taxonomy List Shortcode
 Plugin URI: http://wordpress.mfields.org/plugins/taxonomy-list-shortcode/
 Description: Defines a shortcode which prints an unordered list for taxonomies.
-Version: 0.8.1
+Version: 0.9
 Author: Michael Fields
-Author URI: http://mfields.org/
+Author URI: http://wordpress.mfields.org/
 Copyright 2009-2010  Michael Fields  michael@mfields.org
 
 This program is free software; you can redistribute it and/or modify
@@ -18,9 +18,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+edit.png is a modified version of gtk-edit.png from the Gnome icons set
 */
 
 include_once( 'taxonomy-administration-panel.php' );
+
+/* 2.9 Branch support */
+if( !function_exists( 'taxonomy_exists' ) ) {
+	function taxonomy_exists( $taxonomy ) {
+		global $wp_taxonomies;
+		return isset( $wp_taxonomies[$taxonomy] );
+	}
+}
 
 if( !function_exists( 'mfields_taxonomy_list_shortcode_admin_section' ) ) {
 	add_action( 'mfields_taxonomy_administration_panel', 'mfields_taxonomy_list_shortcode_admin_section' );
@@ -86,7 +96,7 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 	* @uses shortcode_atts
 	* @uses get_terms
 	* @uses mf_taxonomy_list_sanitize_cols
-	* @uses is_taxonomy
+	* @uses taxonomy_exists
 	* @uses get_terms
 	* @uses esc_url
 	* @uses get_term_link
@@ -97,15 +107,17 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 		global $mfields_taxonomy_shortcode_templates;
 		$o = ''; /* "Output" */
 		$nav = '';
+		$edit = '';
+		$edit_img = WP_PLUGIN_URL . '/' . basename( plugin_dir_path(__FILE__) ) . '/edit.png';
 		$term_args = array();
 		$defaults = array(
 			'tax' => 'post_tag',
 			'cols' => 3,
-			'args' => '',
 			'background' => 'fff',
 			'color' => '000',
 			'show_counts' => 1,
-			'per_page' => false
+			'per_page' => false,
+			'show_all' => false
 			);
 		
 		extract( shortcode_atts( $defaults, $atts ) );
@@ -114,8 +126,10 @@ if( !function_exists( 'mf_taxonomy_list_shortcode' ) ) {
 		/* Convert the $args string into an array. */
 		parse_str( html_entity_decode( $args ), $term_args );
 		
-		/* Set value for "pad_counts" to true if user did not specify. */
-		if( !array_key_exists( 'pad_counts', $term_args ) )
+		/* Pad Counts should always be true for hierarchical taxonomies. */
+		$term_args['pad_counts'] = true;
+		
+		if( $show_all )
 			$term_args['get'] = 'all';
 		
 		/* Paging arguments for get_terms(). */
@@ -169,7 +183,7 @@ EOF;
 		}
 		
 		/* The user-defined taxonomy does not exist - return an empty string. */
-		if( !is_taxonomy( $tax ) )
+		if( !taxonomy_exists( $tax ) )
 			return $o;
 		
 		/* Get the terms for the given taxonomy. */
@@ -198,9 +212,9 @@ EOF;
 					if ( current_user_can( $taxonomy->cap->manage_terms ) ) {
 						$title = 'Edit ' . esc_attr( $term->name );
 						$href = admin_url() . 'edit-tags.php?action=edit&taxonomy=' . esc_attr( $taxonomy->name ) . '&tag_ID=' . $term->term_id;
-						$edit = '<a href="' . $href . '" title="' . $title . '">[edit]</a> ';
+						$edit = '<a class="edit-term" href="' . $href . '" title="' . $title . '"><img src="' . $edit_img . '" alt="edit" /></a> ';
 					}
-					$o.= "\n\t\t" . '<li' . $li_class . $style . '>' . $edit . '<a' . $style . ' href="' . $url . '">' . $term->name . '</a>' . $quantity . '</li>';
+					$o.= "\n\t\t" . '<li' . $li_class . $style . '><a' . $style . ' class="term-name" href="' . $url . '">' . $term->name . '</a>' . $edit . '' . $quantity . '</li>';
 				}
 				$o.=  "\n\t" . '</ul>';
 			}
@@ -310,7 +324,18 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 		.entry ul.mf_taxonomy_column li.has-quantity {
 			border-bottom: 1px dotted #888;
 			}
-		.mf_taxonomy_column a,
+		
+		.mf_taxonomy_column a.edit-term {
+			height: 16px;
+			width: 16px;
+			display: block;
+		}
+		.logged-in .mf_taxonomy_column a.term-name {
+			left: 16px;
+			padding-left: 4px;
+		}
+		.mf_taxonomy_column a.edit-term,
+		.mf_taxonomy_column a.term-name,
 		.mf_taxonomy_column .quantity {
 			position:absolute;
 			bottom: -0.2em;
@@ -318,7 +343,7 @@ if( !function_exists( 'mf_taxonomy_list_css' ) ) {
 			background: #fff;
 			z-index:10;
 			}
-		.mf_taxonomy_column a {
+		.mf_taxonomy_column a.term-name {
 			display: block;
 			left:0;
 			padding-right: 0.3em;

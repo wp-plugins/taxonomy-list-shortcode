@@ -4,7 +4,7 @@ Contributors: mfields
 Donate link: http://mfields.org/donate/
 Tags: taxonomy, tag, category, index, list
 Requires at least: 2.8.6
-Tested up to: 3.0 BETA
+Tested up to: 3.0-RC3
 Stable tag: trunk
 
 The Taxonomy List Shortcode plugin adds a shortcode to your WordPress installation which enables you to display multiple unordered lists containing every term of a given taxonomy.
@@ -46,6 +46,11 @@ __Examples__
 
 1. __Custom Taxonomy with 5 Columns__ `[taxonomy-list tax="fishy-squiggles" cols="5"]` - Display 5, horizontally-aligned unordered lists of the custom taxonomy "fishy-squiggles".
 
+__Notes on post status__
+
+* Terms containing published, password protected posts will be shown in the list.
+* Terms containing only private, scheduled, draft or posts pending review will not be displayed in the list.
+
 __The XHTML + CSS was Tested in the Following User Agents__
 
 * Windows XP: Internet Explorer 6
@@ -64,6 +69,9 @@ __This Plugin has been tested with the Following WordPress Themes__
 
 == Upgrade Notice ==
 
+= 0.9 =
+Added edit links to each term displayed in a list. Please see Changelog for all changes.
+
 = 0.8 =
 Paging has been added for the term lists. Full support for WordPress version 3.0 has been added.
 
@@ -72,6 +80,15 @@ You are now able to disable term counts using the "show_counts" argument.
 
 
 ==Changelog==
+
+= 0.9 =
+* Replaced is_taxonmy() with taxonomy_exists() for WordPress 3.0.
+* Defined taxonomy_exists() for 2.9 branch.
+* Added edit links to the terms lists.
+* show_all argument has been added to shortcode. It is set to false by default.
+* Tested in 3.0-RC3 using the TwentyTen theme.
+* Shortcode's 'args' argument has been removed.
+* Pad counts is now always set to true for get_terms().
 
 = 0.8.1 =
 * Fixed bug in form control for css toggle.
