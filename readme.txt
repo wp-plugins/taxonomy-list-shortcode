@@ -67,6 +67,11 @@ __This Plugin has been tested with the Following WordPress Themes__
 * [Hybrid](http://themehybrid.com/)
 * [Thematic](http://themeshaper.com/)
 
+
+== Screenshots ==
+1. This is the output of the shortcode when set to display the terms of custom taxonomy "Topics".
+2. Same view as above, but when you are logged in - edit links will display next to each term.
+
 == Upgrade Notice ==
 
 = 0.9 =
